@@ -2,3 +2,8 @@
 *.pot
 *.pyc
 local_settings.py
+CACHE
+deleted
+messages
+louersanscom/settings
+louersanscom/media
