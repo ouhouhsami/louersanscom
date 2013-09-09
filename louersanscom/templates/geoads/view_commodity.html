@@ -1,0 +1,23 @@
+{% load i18n %}
+
+{% if ad.colocation or ad.furnished or ad.heating or ad.kitchen or ad.duplex or ad.swimming_pool or ad.alarm or ad.air_conditioning or ad.fireplace or ad.cellar or ad.parking or ad.terrace or ad.balcony %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">Commodités</h4>
+    </div>
+  <ul class="list-group">
+    {% if ad.furnished %}<li class="list-group-item">{% trans "Bien Meublé" %} : {{ ad.furnished }}</li>{% endif %}
+    {% if ad.colocation %}<li class="list-group-item">{% trans "Colocation acceptée" %}</li>{% endif %}
+    {% if ad.heating %}<li class="list-group-item">{% trans "Chauffage" %} : {{ ad.get_heating_display }}</li>{% endif %}
+    {% if ad.kitchen %}<li class="list-group-item">{% trans "Cuisine équipée" %}</li>{% endif %}
+    {% if ad.cellar %}<li class="list-group-item">{% trans "Cave" %}</li>{% endif %}
+    {% if ad.parking %}<li class="list-group-item">{% trans "Parking" %} {{ ad.get_parking_display }}</li>{% endif %}
+    {% if ad.swimming_pool %}<li class="list-group-item">{% trans "Piscine" %}</li>{% endif %}
+    {% if ad.alarm %}<li class="list-group-item">{% trans "Alarme" %}</li>{% endif %}
+    {% if ad.air_conditioning %}<li class="list-group-item">{% trans "Air conditionné" %}</li>{% endif %}
+    {% if ad.fireplace %}<li class="list-group-item">{% trans "Cheminée" %} : {{ ad.get_fireplace_display }}</li>{% endif %}
+    {% if ad.terrace %}<li class="list-group-item">{% trans "Terrasse" %} : {{ ad.terrace }} m²</li>{% endif %}
+    {% if ad.balcony %}<li class="list-group-item">{% trans "Balcon" %} : {{ ad.balcony }} m²</li>{% endif %}
+  </ul>
+</div>
+{% endif %}

@@ -1,0 +1,3 @@
+include LICENSE
+recursive-include louersanscom/templates *
+recursive-include louersanscom/ads/static *

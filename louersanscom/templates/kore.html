@@ -1,0 +1,14 @@
+{% extends 'kore.html' %}
+{% load static compress %}
+
+
+{% block title %}LouerSansCom {{ block.super }}{% endblock %}
+
+{% block media %}
+
+  {% compress css %}
+    <link type="text/less" rel="stylesheet" href="{{ STATIC_URL }}less/louersanscom.less" />
+  {% endcompress %}
+
+  {{ block.super }}
+{% endblock %}

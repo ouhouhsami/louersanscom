@@ -1,0 +1,3 @@
+{% load ads_tag i18n %}
+
+{{ ad.get_habitation_type_display }} {{ ad.nb_of_rooms }} {% trans "pièce" %}{{ ad.nb_of_rooms|pluralize }} ({{ ad.nb_of_bedrooms }} ch.) {{ ad.price|priceformat }} {% trans "€/mois" %} - {{ ad.surface }} m<sup>2</sup>{% if ad.surface_carrez %} ({{ ad.surface_carrez }} m² loi Carrez){% endif %}

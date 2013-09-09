@@ -1,0 +1,22 @@
+{% extends 'userena/base_userena.html' %}
+{% load i18n bootstrap %}
+
+{% block title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-offset-3 col-md-6">
+		<form action="" method="post" class="well">
+			{% csrf_token %}
+			<div class="form-group">
+				<legend>{% trans "Signup" %}</legend>
+				<div class="alert alert-info">
+					En vous inscrivant, vous pourrez : <ul><li>créer une alerte email</li><li>déposer une demande de location pour être contacté directement par les propriétaires</li><li>ajouter un bien à louer</li></ul>
+				</div>
+				{{ form|bootstrap }}
+			</div>
+				<input type="submit" value="{% trans "Signup"%}" class="btn btn-primary btn-block" />
+		</form>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,1 @@
+django-sanscom==0.0.1

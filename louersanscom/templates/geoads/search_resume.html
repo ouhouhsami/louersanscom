@@ -1,0 +1,37 @@
+Recherche <i>{% if search.search_zone %}géolocalisée{% else %}non géolocalisée{% endif %}</i>
+{% if search.habitation_type %} : {{ search.habitation_type|join:', ' }}{% endif %}
+{% if search.price_0 and search.price_1 %}
+- entre {{ search.price_0 }} et {{ search.price_1 }} €/mois
+{% else %}
+	{% if search.price_0 %}
+	- supérieur à {{ search.price_0 }} €/mois
+	{% else %}
+		{% if search.price_1 %}
+		- inférieur à {{ search.price_1 }} €/mois
+		{% endif %}
+	{% endif %}
+{% endif %}
+
+{% if search.surface_0 and search.surface_1 %}
+- entre {{ search.surface_0 }} et {{ search.surface_1 }} m²
+{% else %}
+	{% if search.surface_0 %}
+	- supérieur à {{ search.surface_0 }} m²
+	{% else %}
+		{% if search.surface_1 %}
+		- inférieur à {{ search.surface_1 }} m²
+		{% endif %}
+	{% endif %}
+{% endif %}
+
+{% if search.nb_of_rooms_0 and search.nb_of_rooms_1 %}
+- entre {{ search.nb_of_rooms_0 }} et {{ search.nb_of_rooms_1 }} pièces
+{% else %}
+	{% if search.nb_of_rooms_0 %}
+	- supérieur à {{ search.nb_of_rooms_0 }} pièces
+	{% else %}
+		{% if search.nb_of_rooms_1 %}
+		- inférieur à {{ search.nb_of_rooms_1 }} pièces
+		{% endif %}
+	{% endif %}
+{% endif %}

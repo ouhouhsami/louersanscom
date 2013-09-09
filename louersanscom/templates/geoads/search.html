@@ -1,0 +1,134 @@
+{% extends "base-menupage.html" %}
+{% load l10n pagination_tags sorting_tags ads_tag utils_tags compress i18n %}
+
+{% block media %}
+{{ block.super }}	
+{{ filter.form.media.css }}
+{{ filter.form.media.js }}
+<script src="{{ STATIC_URL }}js/search_form.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/map-interaction.js" type="text/javascript" charset="utf-8"></script>
+{% endblock media %}
+
+{% block messages %}
+{% if initial_ads %}
+
+<div class="alert hidden-xs" style="background-color:transparent;color:black;">
+	<h2 class='subtitle'>{% blocktrans %}Annonces immobilières<br/> <b>sans intermédiaires</b> & <b>géolocalisées</b>{% endblocktrans %}
+	</h2>
+</div>
+
+{% else %}
+
+
+{% endif %}
+
+
+{% if messages %}
+{% for message in messages %}
+<div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+{% autoescape off %}{{ message }}{% endautoescape %}
+</div>
+{% endfor %}
+
+
+{% endif %}
+
+{% endblock messages %}
+
+{% block menu %}
+{% include 'geoads/menu.html' with selected=1 only %}
+{% endblock menu %}
+
+{% block content %}
+<br />
+<div class="row" id="search_header">
+	<div class="col-md-7">
+		<br />
+		<ol>
+			<li>{% blocktrans %}
+				<form class="form-inline" style="margin:0 0 0">
+					<div class="form-group">
+						Centrer la carte sur votre <a id="localize" class="btn btn-default" href="javascript:localizeMe()" data-loading-text="localisation en cours …">localisation actuelle</a> ou 
+					</div>
+					<div class="form-group">
+						<span class="input-group">
+							<input type="text" class="form-control" id="address" placeholder="indiquer une adresse">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit" id="center_map" data-loading-text="en cours …">Centrer</button>
+							</span>
+						</span>
+					</div>
+				</form>
+				{% endblocktrans %}
+			</li>
+			<li>{% blocktrans %}Cliquer sur <div style="width:29px;float:none;display:inline-block;vertical-align:middle" class="leaflet-control-draw leaflet-control"><a class="leaflet-control-draw-polygon" href="#" title="undefined"></a></div> pour dessiner votre zone de recherche{% endblocktrans %}</li>
+		</ol>	
+	</div>
+	<div class="col-md-5" >
+		<br />
+		<button form="search" type="submit" value="search" class="btn btn-lg btn-block btn-primary" id="search_button">
+			3. {% trans "Rechercher un bien" %}
+		</button>
+		<br />
+	</div>
+</div>
+<br />
+<div class="row" >
+	<form role="form" class="form-horizontal" action="{% if search_id %}{% url "search" search_id %}{% else %}{% url "search" %}{% endif %}" method="GET" id="search" >
+		<div class="col-md-7" >
+			{{ filter.form.location }}
+			{% include "geoads/search_results.html" %}
+		</div>
+		<div class="col-md-5" >
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					{% trans "Critères optionels" %}
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label for="{{ filter.form.habitation_type.name }}" class="col-md-3 control-label">{{ filter.form.habitation_type.label }}</label>
+						<div class="col-md-9">
+						{{ filter.form.habitation_type }}
+						</div>
+					</div>					
+					<div class="form-group">
+						<label for="{{ filter.form.price.name }}" class="col-md-3 control-label">{{ filter.form.price.label }}</label>
+						{{ filter.form.price }}
+					</div>
+					<div class="form-group">
+						<label for="{{ filter.form.price.name }}" class="col-md-3 control-label">{{ filter.form.nb_of_rooms.label }}</label>
+						{{ filter.form.nb_of_rooms }}
+					</div>
+					<div class="form-group">
+						<label for="{{ filter.form.price.name }}" class="col-md-3 control-label">{{ filter.form.nb_of_bedrooms.label }}</label>
+						{{ filter.form.nb_of_bedrooms }}
+					</div>
+					<div class="form-group">
+						<label for="{{ filter.form.price.name }}" class="col-md-3 control-label">{{ filter.form.surface.label }}</label>
+						{{ filter.form.surface }}
+					</div>
+					<div class="form-group">
+						<label for="{{ filter.form.price.name }}" class="col-md-3 control-label">{{ filter.form.furnished.label }}</label>
+						<div class="col-md-9">
+							{{ filter.form.furnished }}
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="{{ filter.form.colocation.name }}" class="col-md-3 control-label">{{ filter.form.colocation.label }}</label>
+						<div class="col-md-9">
+							{{ filter.form.colocation }}
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="{{ filter.form.elevator.name }}" class="col-md-3 control-label">{{ filter.form.elevator.label }}</label>
+						<div class="col-md-9">
+							{{ filter.form.elevator }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</form>		
+</div>
+
+{% endblock %}

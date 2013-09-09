@@ -1,0 +1,317 @@
+{% extends "base-menupage.html" %}
+{% load ads_tag utils_tags i18n floppyforms %}
+
+{% block title %}
+{{ site.name }} | {% trans "Proposer un bien" %}
+{% endblock %}
+
+{% block media %}
+{{ block.super }}
+{{ form.media }}
+{% endblock %}
+
+{% block messages %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{% autoescape off %}{{ message }}{% endautoescape %}</div>
+{% endfor %}
+{% endif %}
+{% if form.errors %}
+<div class="alert alert-error">
+	{% trans "Le formulaire comporte des erreurs, indiquées ci-dessous en rouge. Veuillez les corriger et soumettre à nouveau votre annonce." %}
+</div>
+{% endif %}
+{% endblock messages %}
+
+{% block menu %}
+{% include 'geoads/menu.html' with selected=2 only %}
+{% endblock menu %}
+
+{% block content %}
+<div class="row">
+	<br />
+	<div class="col-md-8 col-md-offset-2">
+		<div class="alert alert-info">
+			{% blocktrans %}
+			Les champs obligatoires sont identifiés par une <span class="important_red">*</span>.
+			<br />Nous vous conseillons de renseigner le maximum de champs, 
+			d'être exhaustif dans votre description et de fournir un plan de votre bien et plusieurs photos.
+			En effet, les acheteurs sont plus attirés par les biens pour lesquels la description est complète 
+			et seront mieux à même de cibler les biens susceptibles de vraiment correspondre à leurs besoins. 
+			Les acheteurs qui vous contacteront seront ainsi les plus susceptibles d'être vraiment intéressés 
+			par votre bien, cela vous évitera de nombreux appels passés à titre informatifs ou des visites 
+			superflues qui auront peu de chance d'aboutir.	 
+			{% endblocktrans %}
+		</div>
+		<form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			{% form form using %}
+
+
+			<div class="panel panel-default base house apartment">
+				<div class="panel-heading">
+					<h3 class="panel-title">Informations générales</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label for="{{ form.habitation_type.name }}" class="col-md-3 control-label">
+							{{ form.habitation_type.label }}
+						</label>
+						<div class="col-md-4">
+						{% formfield form.habitation_type %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.price.name }}" class="col-md-3 control-label">
+							{{ form.price.label }}
+						</label>
+						<div class="col-md-3">
+						{% formfield form.price using "bootstrap/input.html" with append_text="€/mois" %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.maintenance_charges.name }}" class="col-md-3 control-label">
+							{{ form.maintenance_charges.label }}
+						</label>
+						<div class="col-md-3">
+						{% formfield form.maintenance_charges using "bootstrap/input.html" with append_text="€/mois" %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.surface.name }}" class="col-md-3 control-label">
+							{{ form.surface.label }}
+						</label>
+						<div class="col-md-3">
+						{% formfield form.surface using "bootstrap/input.html" with append_text="m²" %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.surface_carrez.name }}" class="col-md-3 control-label">
+							{{ form.surface_carrez.label }}
+						</label>
+						<div class="col-md-3">
+						{% formfield form.surface_carrez using "bootstrap/input.html" with append_text="m²" %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.nb_of_rooms.name }}" class="col-md-3 control-label">
+							{{ form.nb_of_rooms.label }}
+						</label>
+						<div class="col-md-3">
+						{% formfield form.nb_of_rooms %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.nb_of_bedrooms.name }}" class="col-md-3 control-label">
+							{{ form.nb_of_bedrooms.label }}
+						</label>
+						<div class="col-md-3">
+						{% formfield form.nb_of_bedrooms %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.user_entered_address.name }}" class="col-md-3 control-label">
+							{{ form.user_entered_address.label }}
+						</label>
+						<div class="col-md-9">
+						{% formfield form.user_entered_address using "bootstrap/input.html" %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.colocation using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.furnished  %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.housing_tax.name }}" class="col-md-3 control-label">
+							{{ form.housing_tax.label }}
+						</label>
+						<div class="col-md-3">
+						{% formfield form.housing_tax using "bootstrap/input.html" with append_text="€/an" %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default house">
+				<div class="panel-heading">
+					<h3 class="panel-title">Surface du terrain</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.ground_surface using "bootstrap/input.html" with append_text="m²" %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default apartment">
+				<div class="panel-heading">
+					<h3 class="panel-title">Situation du logement dans l'immeuble</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label for="{{ form.floor.name }}" class="col-md-3 control-label">
+							{{ form.floor.label }}
+						</label>
+						<div class="col-md-2">
+						{% formfield form.floor %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.ground_floor using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.top_floor using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.not_overlooked using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.duplex using "bootstrap/checkbox.html" %}
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="panel panel-default apartment">
+				<div class="panel-heading">
+					<h3 class="panel-title">A propos de l'immeuble</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.elevator using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.intercom using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.digicode using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.doorman using "bootstrap/checkbox.html" %}
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div class="panel panel-default house apartment">
+				<div class="panel-heading">
+					<h3 class="panel-title">Commodités</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label for="{{ form.heating.name }}" class="col-md-3 control-label">
+							{{ form.heating.label }}
+						</label>
+						<div class="col-md-4">
+						{% formfield form.heating %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="{{ form.parking.name }}" class="col-md-3 control-label">
+							{{ form.parking.label }}
+						</label>
+						<div class="col-md-4">
+						{% formfield form.parking %}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.terrace %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.balcony %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default house apartment">
+				<div class="panel-heading">
+					<h3 class="panel-title">Pièces</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.separate_dining_room using "bootstrap/checkbox.html" %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.separate_toilet %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.bathroom %}
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+						{% formfield form.shower %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default house apartment">
+				<div class="panel-heading">
+					<h3 class="panel-title">Photos</h3>
+				</div>
+				<div class="panel-body">
+					<!-- <class="atom house apartment parking others" id="pictures"> -->
+					<div class="alert alert-info">N'hésitez pas à insérer une photo du plan de votre bien.</div>
+					{{ picture_formset.management_form }}
+					{% for picture_form in picture_formset %}
+					<div class="well">
+						{{ picture_form.as_p }}
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="panel panel-default house apartment">
+				<div class="panel-heading">
+					<h3 class="panel-title">Informations complémentaires</h3>
+				</div>
+				<div class="panel-body">
+
+					<div class="form-group">
+						<div class="col-md-12">
+							{% formfield form.description %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{% endform %}
+
+			<input type="submit" value="{% blocktrans %}Enregistrer l'annonce {% endblocktrans %}" class="btn btn-primary btn-lg btn-block" />
+		</form>
+
+	</div>
+</div>
+
+{% endblock content %}

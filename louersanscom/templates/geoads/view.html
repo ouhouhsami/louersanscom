@@ -1,0 +1,61 @@
+{% extends "base-simplepage.html" %}
+{% load ads_tag l10n i18n %}
+
+{% block title %}{% trans "Vente" %} {{ ad.get_habitation_type_display }} {{ ad.nb_of_rooms }} {% trans "pièce" %}{{ ad.nb_of_rooms|pluralize }} - {{ ad.price|priceformat }} {% trans "€/mois" %} - {{ ad.surface }} m² | LouerSansCom{% endblock %}
+
+{% block meta %}
+<meta name="keywords" lang="fr" content="{{ ad.get_habitation_type_display }},{% trans 'à vendre' %},{% trans 'sans intermédiaire' %},{{ ad.nb_of_rooms }} {% trans 'pièce' %}{{ ad.nb_of_rooms|pluralize }}" />
+<meta name="description" lang="fr" content="Vente {{ ad.get_habitation_type_display }} {{ ad.nb_of_rooms }} {% trans 'pièce' %}{{ ad.nb_of_rooms|pluralize }} - {{ ad.price|priceformat }} € - {{ ad.surface }} m²" />
+{% endblock %}
+
+{% block media %}
+{{ block.super }}
+{% include 'geoads/view_js.html' %}
+{% endblock %}
+
+{% block messages %}	
+{{ block.super }}
+{% if contact_form.errors %}
+<div class="alert alert-error">
+  {% trans "Le formulaire comporte des erreurs, indiquées ci-dessous en rouge. Veuillez les corriger et soumettre à nouveau votre annonce." %}
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-header" style="margin-top:0px">
+  <h2>{% include 'geoads/resume.html' %}</h2>
+</div>
+<div class="row">
+  <div class="col-md-7">
+    {% include 'geoads/view_pictures.html' %}
+    <br />
+    <div id="map_locate" ></div>
+    {% include 'geoads/view_geo.html' %}
+    <br />
+    {% include 'geoads/view_contactform.html' %}
+  </div>
+  <div class="col-md-5">
+    {% include 'geoads/view_situation.html' %}
+    {% include 'geoads/view_commodity.html' %}
+    {% include 'geoads/view_flat.html' %}
+    {% include 'geoads/view_rooms.html' %}
+    {% if ad.description %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">{% trans "Autres informations" %}</h4>
+      </div>
+      <div class="panel-body">
+        <p>{{ ad.description|linebreaksbr  }}</p>
+        {% include 'geoads/view_ad_dates.html' %}
+      </div>
+    </div>
+    {% endif %}           
+  </div>
+</div>
+
+
+{% endblock %}

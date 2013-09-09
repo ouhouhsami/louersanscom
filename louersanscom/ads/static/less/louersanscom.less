@@ -1,0 +1,62 @@
+@import "louersanscom/ads/static/bootstrap/less/bootstrap.less";
+
+// Custom var
+@link-color: #9D81A1;  // override default bootstrap color
+@secondColor: Pink;  // create a second color for theme 
+@brand-primary: #9D81A1;
+
+#search_header {
+    background-color: @secondColor;
+}
+
+.navbar.navbar-fixed-top {
+	border-bottom:5px solid @secondColor;
+}
+.navbar.navbar-fixed-bottom {
+	border-top:5px solid @secondColor;
+}
+.sanscom_font {
+	color:@secondColor;
+}
+
+.icon-map-custommarker {
+  background-image: url("../img/icon-apartment.png");
+  background-position: 0;
+}
+
+// set form-control field style without using it
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"] {
+	.form-control();
+	//&:extend(.form-control);
+}
+
+textarea {
+    height: auto;
+}
+
+.input-group {
+	select {
+		.border-right-radius(0);
+	}
+	input {
+		&:first-child {
+			.border-right-radius(0);
+		}
+	}
+}
